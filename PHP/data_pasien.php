@@ -131,6 +131,25 @@
     </section>
     <!-- END Navigation Bar -->
 
+	 <?php
+
+		include "../PHP/koneksi.php";
+
+		if (isset($_POST['submit_pasien'])) {
+			mysqli_query($koneksi, "INSERT INTO tabel_pasien SET
+			pasien_id = '$_POST[id_pasien]',
+			pasien_nama = '$_POST[nama_pasien]', 
+			pasien_usia = '$_POST[usia]',
+			pasien_jeniskelamin = '$_POST[jenis_kelamin]',
+			pasien_tinggi ='$_POST[tinggi]',
+			pasien_berat = '$_POST[berat_badan]',
+			pasien_tempatlahir ='$_POST[tempat_lahir]',
+			pasien_tanggallahir = '$_POST[tanggal_lahir]',
+			pasien_alamat = '$_POST[alamat]',
+			pasien_pekerjaan = '$_POST[pekerjaan]',
+			pasien_notelepon ='$_POST[no_telepon]'");
+		}
+	?>
     <!-- JS -->
     <script src="../JS/Script.js"></script>
     <!-- END JS -->

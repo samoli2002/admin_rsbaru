@@ -7,6 +7,8 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../CSS/dataPasien.css">
+	 <script src="../JS/jquery.min.js"></script>
+
 	 <title>Data Pasien | AdminSite</title>
 </head>
 <body>
@@ -69,34 +71,14 @@
 			</button>
 			</div>
 
-
-		<?php
-			if (isset($_POST['search_idpasien'])) {
-				$cari = $_POST['cari_idpasien'];
-				$query = "SELECT * FROM tabel_pasien WHERE pasien_id LIKE '%' .$cari";
-				$hasil_pencarian = filterTabel($query);
-			}
-
-			else {
-				$query = "SELECT * FROM tabel_pasien";
-				$hasil_pencarian = filterTabel($query);
-			}
-
-			function filterTabel($query) {
-				include "../PHP/koneksi.php";
-				$hasil = mysqli_query($koneksi,$query);
-				return $hasil;
-			}
-
-		?>
 		<div class="containera">
-			<form action="../PHP/laporan_datapasien.php" method="POST" autocomplete="off">
+			<form action="" method="POST" autocomplete="off">
 				<div class="fieldsa">
 					<div class="input-fielda">
 						<label>ID Pasien</label>
-						<input type="text" name="cari_idpasien">
+						<input type="text" name="cari_idpasien" placeholder="Cari ID Pasien" id="keyword">
 
-						<button class="searchBtn" name="search_idpasien">
+						<button class="searchBtn" name="search_idpasien" id="tbl_cari">
 							<span class="btnText" >Cari</span>
 						</button>
 					</div>
@@ -115,7 +97,7 @@
 			<label for="choose_filter">Records per page</label>
 		</div>
 
-		<table class="laporan_pasien">
+		<table class="laporan_pasien" id="tampil">
 			<thead>
 				<tr>
 					<th>ID Pasien</th>
@@ -158,7 +140,6 @@
 				}
 			?>
 		</table>
-
 		<?php
 			if (isset($_GET['kode'])) {
 				mysqli_query($koneksi, "DELETE FROM tabel_pasien WHERE pasien_id = '$_GET[kode]'");
@@ -171,6 +152,24 @@
 
     <!-- JS -->
     <script src="../JS/Script.js"></script>
+
+	 <script>
+		$(document).ready(function() {
+			$("#keyword").keyup(function() {
+				$.ajax({
+					type: 'POST',
+					url: '../PHP/cari_pasien.php',
+					data: {
+						search: $(this).val()
+					},
+					cache: false,
+					success: function(data) {
+						$("#tampil").html(data);
+					}
+				})
+			})
+		})
+	 </script>
     <!-- END JS -->
 	</main>
 </body>
